@@ -6,8 +6,6 @@ services:
     container_name: tic_tac_toe_frontend
     ports:
       - ${FRONTEND_PORT}:3000
-    volumes:
-      - .:/app
     networks:
       - tic_tac_toe_network
 
