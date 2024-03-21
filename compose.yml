@@ -1,0 +1,16 @@
+version: '3.7'
+
+services:
+  web:
+    build: .
+    container_name: tic_tac_toe_frontend
+    ports:
+      - "80:3000"
+    volumes:
+      - .:/app
+    networks:
+      - tic_tac_toe_network
+
+networks:
+  tic_tac_toe_network:
+    driver: bridge
