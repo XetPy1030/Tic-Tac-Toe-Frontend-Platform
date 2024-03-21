@@ -1,5 +1,5 @@
 import {useParams} from "react-router-dom";
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from "react";
 import gameStore, {WinStatus} from "../../stores/GameStore";
 import webSocketStore from "../../stores/WebSocketStore";
 import {observer} from "mobx-react";
@@ -29,10 +29,7 @@ const Game = () => {
 
         console.log("Keycloak init")
         const initOptions = {
-            url: KEYCLOAK_URL,
-            realm: KEYCLOAK_REALM,
-            clientId: KEYCLOAK_CLIENT_ID,
-            onLoad: "login-required",
+            url: KEYCLOAK_URL, realm: KEYCLOAK_REALM, clientId: KEYCLOAK_CLIENT_ID, onLoad: "login-required",
         };
         const keycloak = new Keycloak(initOptions);
         keycloak.init({onLoad: "login-required"}).then(authenticated => {
@@ -51,23 +48,19 @@ const Game = () => {
         if (gameStore.isGameJoin() && !webSocketStore.isWsConfigured) {
             webSocketStore.configureWs();
         }
-    }, [gameStore.game_id, gameStore.player_id]);
+    }, [gameStore.game_id, gameStore.player_id]); // eslint-disable-line
 
-    return (
-        <div>
+    return (<div>
             <h1>Game ID: {game_id}</h1>
             <h2>Player ID: {player_id}</h2>
 
             <h3>Your symbol: {gameStore.symbol}</h3>
 
             <h3>Map:</h3>
-            <Map />
+            <Map/>
 
-            {gameStore.winStatus !== WinStatus.unknown && (
-                <h3>You {gameStore.winStatus}!</h3>
-            )}
-        </div>
-    );
+            {gameStore.winStatus !== WinStatus.unknown && (<h3>You {gameStore.winStatus}!</h3>)}
+        </div>);
 };
 
 export default observer(Game);

@@ -1,16 +1,7 @@
-import {
-    Button,
-    Container,
-    Form,
-    FormControl,
-    Nav,
-    Navbar,
-    CardLink,
-} from 'react-bootstrap';
+import {Button, CardLink, Container,} from 'react-bootstrap';
 import backendApi from "../api/BackendApi";
 import {useNavigate} from "react-router-dom";
 import React, {useState} from "react";
-import gameStore from "../stores/GameStore";
 
 export const Launcher = () => {
     const [data, setData] = useState();
