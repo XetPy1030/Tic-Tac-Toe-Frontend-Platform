@@ -8,6 +8,7 @@ export const WinStatus = {
 }
 
 class GameStore {
+    token;
     game_id;
     player_id;
     map;
@@ -16,6 +17,7 @@ class GameStore {
     symbol;
 
     constructor() {
+        this.token = null;
         this.game_id = null;
         this.player_id = null;
         this.map = null;
@@ -35,7 +37,7 @@ class GameStore {
     }
 
     isGameJoin() {
-        return this.game_id && this.player_id;
+        return (this.game_id && this.player_id) || (this.game_id && this.token)
     }
 
     setMap(map) {
@@ -56,6 +58,10 @@ class GameStore {
 
     setSymbol(symbol) {
         this.symbol = symbol;
+    }
+
+    setToken(token) {
+        this.token = token;
     }
 }
 

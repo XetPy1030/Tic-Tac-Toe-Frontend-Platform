@@ -12,10 +12,12 @@ class WsStore {
 
     configureWs() {
         if (gameStore.isGameJoin() && !this.#ws) {
-            const {game_id, player_id} = gameStore;
+            const {game_id, player_id, token} = gameStore;
 
-            this.ws = new WebSocket(`${WS_URL}/connect/${game_id}/${player_id}`);
-            this.ws.onopen = this.onOpen;
+            const link = token ? `${WS_URL}/connect/${game_id}` : `${WS_URL}/connect/${game_id}/${player_id}`;
+
+            this.ws = new WebSocket(link);
+            this.ws.onopen = token ? this.onOpenWithToken : this.onOpen;
             this.ws.onmessage = this.onMessage;
             this.ws.onclose = this.onClose;
         } else {
@@ -27,10 +29,25 @@ class WsStore {
         console.log("WebSocket is opened!");
     }
 
+    onOpenWithToken() {
+        this.send(JSON.stringify({
+            action: "auth",
+            data: {
+                token: `Bearer ${gameStore.token}`
+            }
+        }))
+        console.log("WebSocket is opened with token!")
+    }
+
     onMessage(event) {
         const data = JSON.parse(event.data);
-        const {action, data: dataAction} = data;
+        const {action, data: dataAction, is_success: isSuccess} = data;
         const actionFunc = WsStore.actions[action];
+
+        if (!isSuccess) {
+            alert(JSON.stringify(dataAction))
+            return;
+        }
 
         if (actionFunc) {
             actionFunc(dataAction);
